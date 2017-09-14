@@ -1,0 +1,9 @@
+import "GG_UserInfo.proto";
+
+package TopFun.ClientMsg;
+
+message GG_User{
+	required GG_UserInfo info = 1;
+	required int64 diamond1 = 2;
+}
+

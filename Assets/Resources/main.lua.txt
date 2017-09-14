@@ -1,0 +1,59 @@
+require "library"
+
+local rapidjson = require 'rapidjson' 
+print (rapidjson)
+local t = rapidjson.decode('{"a":123}')
+print (t)
+print(t.a)
+t.a = 456
+local s = rapidjson.encode(t)
+print('json', s)
+
+local lpeg = require 'lpeg'
+print(lpeg.match(lpeg.R '09','123'))
+
+local protobuf = require 'protobuf'
+protobuf.register(CS.UnityEngine.Resources.Load('pb4lua/GG_UserInfo.proto').bytes)
+--protobuf.register(CS.UnityEngine.Resources.Load('pb4lua/GG_User.proto').bytes)
+
+-- local gg_GameRoomInfo = {}
+-- gg_GameRoomInfo.roomId = 2
+-- gg_GameRoomInfo.status = 1
+-- gg_GameRoomInfo.pwdMd5 = 1
+-- gg_GameRoomInfo.regTime = 1
+-- gg_GameRoomInfo.info = 1
+
+-- local encode = protobuf.encode('GG_GameRoomInfo', gg_GameRoomInfo)
+
+-- local decoderoom = protobuf.decode('GG_GameRoomInfo', encode)
+-- print(decoderoom.roomId)
+-- print(decoderoom.playingCount)
+
+local userInfo = {}
+userInfo.name = 'world'
+userInfo.diamond = 1000
+userInfo.level = 1000
+
+local user = { }
+-- user.id = 1
+-- user.status = { 1,0,2,4}
+-- user.pwdMd5 = '1'
+-- user.regTime = '0'
+user.info = userInfo
+user.diamond1 = 100000000
+
+--序列化
+local encode = protobuf.encode('TopFun.ClientMsg.GG_User', user)
+
+local mytest = CS.myTest()
+
+mytest:luaDecodeString(encode)
+
+print("end encode")
+
+-- 反序列化
+local user_decode = protobuf.decode('TopFun.ClientMsg.GG_User', encode)
+Library:PrintTBData(user_decode)--[[arg(s):tbVar, szBlank, output]]
+
+-- assert(user.id == user_decode.id and user.info.diamond == user_decode.info.diamond)
+-- print('hello', user_decode.info.name)
